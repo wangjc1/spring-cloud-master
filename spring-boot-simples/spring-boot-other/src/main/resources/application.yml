@@ -1,0 +1,7 @@
+server:
+  port: 8082
+management:
+  port: 54001
+  health:
+    mail:
+      enabled: false
