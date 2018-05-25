@@ -3,7 +3,7 @@
  * @author 52395090@qq.com
  * http://git.oschina.net/zhou666/spring-cloud-7simple
  */
-package cloud.eureka.server;
+package cloud.eureka;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
