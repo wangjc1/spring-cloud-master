@@ -20,6 +20,6 @@ public class AppConfig {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
 
         MyService service = ctx.getBean(MyService.class);
-        service.sayHello("wjc");
+        service.sayHello("wjc1");
     }
 }
