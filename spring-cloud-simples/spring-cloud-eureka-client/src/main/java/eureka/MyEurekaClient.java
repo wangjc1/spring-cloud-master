@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EnableEurekaClient
 @RestController
-public class EurekaClient {
+public class MyEurekaClient {
 
     public static void main(String[] args) {
-        SpringApplication.run(EurekaClient.class, args);
+        SpringApplication.run(MyEurekaClient.class, args);
     }
 
     @Value("${server.port}")
     String port;
     @RequestMapping("/hi")
-    public String home(@RequestParam String name) {
+    public String home(@RequestParam(required = false) String name) {
         return "hi "+name+",i am from port:" +port;
     }
 
