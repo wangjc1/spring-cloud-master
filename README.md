@@ -5,7 +5,7 @@ Spring Boot里面有很多初始化实现，这些实现是通过SPI来加载的
 @EnableAutoConfiguration注解解析类
 以默认容器配置为例：
 spring.factories：
-org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration,\
+org.springframework.boot.autoconfigure.web.aEmbeddedServletContainerAutoConfiguration,\
 
 public static List<String> loadFactoryNames(Class<?> factoryClass, ClassLoader classLoader) {
 	String factoryClassName = factoryClass.getName();
@@ -28,7 +28,7 @@ public static List<String> loadFactoryNames(Class<?> factoryClass, ClassLoader c
 	}
 }
 
-http://rensanning.iteye.com/blog/2355938 
+http://rensanning.iteye.com/blog/2355938
 在EmbeddedServletContainerAutoConfiguration类中初始化Tomcat容器
 @Configuration
 @ConditionalOnClass({ Servlet.class, Tomcat.class })
@@ -182,9 +182,11 @@ public ConfigurableApplicationContext run(String... args) {
 	listeners.starting();
 	try {
 		//SpringApplication.run(Application.class,args);处理入口类里args参数
-		//用IDEA运行时，发现默认会添加一个spring.output.ansi.enabled=ALWAYS参数，可以
+		//用IDEA运行时，发现默认会添加一个spring.output.ansi.enabled=ALWAYS参数，可以启用彩色日志输出
 		ApplicationArguments applicationArguments = new DefaultApplicationArguments(
 				args);
+
+
 		ConfigurableEnvironment environment = prepareEnvironment(listeners,
 				applicationArguments);
 
@@ -245,7 +247,7 @@ class Fruit{
 class Apple extends Fruit{
 }
 
-class Banana extends Fruit{    
+class Banana extends Fruit{
 }
 
 再创建两个类，People, Boy。Boy是People的子类，并 override People中的三个method.
