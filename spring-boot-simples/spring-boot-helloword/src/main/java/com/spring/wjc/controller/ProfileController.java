@@ -24,7 +24,7 @@ public class ProfileController {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ProfileController.class);
+        SpringApplication.run(ProfileController.class,args);
     }
 }
 

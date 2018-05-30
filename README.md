@@ -187,6 +187,13 @@ public ConfigurableApplicationContext run(String... args) {
 				args);
 
 
+		//1. 获取系统属性和环境变量：getOrCreateEnvironment()
+		//2. listeners里有个ConfigFileApplicationListener，用于加载配置文件
+		//3. 先获取应用名(可以通过--spring.config.name=xxx参数配置)，如果没有设置则取默认值"application"
+		//4. 获取profiles.active参数(通过--spring.profiles.active=dev参数配置或属性文件配置)
+		//5. 在"classpath:/,classpath:/config/,file:./,file:./config/"路径下搜索 location + appName + "-" + profile + "." + ext
+		//6. 例如搜索application-dev.properties、application-dev.yml、application-dev.xml等配置文件
+		//6.
 		ConfigurableEnvironment environment = prepareEnvironment(listeners,
 				applicationArguments);
 
