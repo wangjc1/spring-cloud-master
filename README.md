@@ -166,6 +166,24 @@ public void processConfigBeanDefinitions(BeanDefinitionRegistry registry) {
 	this.reader.loadBeanDefinitions(configClasses);
 }
 
+
+初始化应用
+private void initialize(Object[] sources) {
+	//添加应用class类型
+	if (sources != null && sources.length > 0) {
+		this.sources.addAll(Arrays.asList(sources));
+	}
+	//判断是否是web环境
+	this.webEnvironment = deduceWebEnvironment();
+	//从META-INF/spring.factories配置文件中加载出所有ApplicationContextInitializer的实现类，并且实例化后添加到initializers集合中
+	setInitializers((Collection) getSpringFactoriesInstances(
+			ApplicationContextInitializer.class));
+	//从META-INF/spring.factories配置文件中加载出所有ApplicationListener的实现类，并且实例化后添加到listeners集合中
+	setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+	//取得包含有main方法的类
+	this.mainApplicationClass = deduceMainApplicationClass();
+}
+
 SpringApplication
 public ConfigurableApplicationContext run(String... args) {
 	StopWatch stopWatch = new StopWatch();
@@ -193,18 +211,36 @@ public ConfigurableApplicationContext run(String... args) {
 		//4. 获取profiles.active参数(通过--spring.profiles.active=dev参数配置或属性文件配置)
 		//5. 在"classpath:/,classpath:/config/,file:./,file:./config/"路径下搜索 location + appName + "-" + profile + "." + ext
 		//6. 例如搜索application-dev.properties、application-dev.yml、application-dev.xml等配置文件
-		//6.
+		//6. 聚集了多种属性源(PropertySource)，比如SimpleCommandLinePropertySource(存放命令参数)、MapPropertySource
+		//7. Spring Boot支持多种参数配置方式，而根据配置方式的不同读取方式也不同，所在属性源也不同，比如命令行参数--spring.profiles.active=xxx，会先从SimpleCommandLinePropertySource中读取
 		ConfigurableEnvironment environment = prepareEnvironment(listeners,
 				applicationArguments);
 
 		//自定义启动图案，在根下创建banner.txt文件
 		//关闭启动图案setBannerMode(Banner.Mode.OFF);
 		Banner printedBanner = printBanner(environment);
+		//创建Spring容器AnnotationConfigApplicationContext
+		//如果容器实现了WebApplicationContext接口，则创建容器webAnnotationConfigEmbeddedWebApplicationContext
 		context = createApplicationContext();
+
 		analyzers = new FailureAnalyzers(context);
+		//还记得SpringApplication中的initializers和listeners集合吗？
+		//applyInitializers(context);方法会循环调用ApplicationContextInitializer.initialize()方法
+		//listeners.contextPrepared(context);方法会循环调用SpringApplicationRunListener.contextPrepared()方法
+		//这样分开初始化的好处在于后面好扩展，而且可以在不同时间点上的操作进行扩展
 		prepareContext(context, environment, listeners, applicationArguments,
 				printedBanner);
+		//调用容器的refresh()方法，这个方法是容器的核心方法
 		refreshContext(context);
+		//容器启动后，执行一些额外的工作，会调用实现ApplicationRunner、CommandLineRunner(实现类必须注入到Spring容器中)这两个接口的run方法，比如：
+		//@Component
+		//@Order(value=1)
+        //public class MyStartupRunner implements CommandLineRunner {
+		//	@Override
+		//	public void run(String... args) throws Exception {
+		//		//TODO
+		//	}
+		//}
 		afterRefresh(context, applicationArguments);
 		listeners.finished(context, null);
 		stopWatch.stop();
@@ -218,6 +254,27 @@ public ConfigurableApplicationContext run(String... args) {
 		handleRunFailure(context, listeners, analyzers, ex);
 		throw new IllegalStateException(ex);
 	}
+}
+
+environment变量里面保存着所以程序相关的环境变量和属性，不知道大家有没有考虑个问题，就是这里加载了属性，那么Spring容器对象如何访问呢？其实这要归功于Spring容器上下文(WebApplicationContext)，他会把environment中的属性源(PropertySource)集合包装成@Value等可以访问的属性对象，这个过程比较繁琐，具体参考PropertySourcesPlaceholderConfigurer.processProperties()方法
+private ConfigurableEnvironment prepareEnvironment(
+		SpringApplicationRunListeners listeners,
+		ApplicationArguments applicationArguments) {
+	// Create and configure the environment
+	//获取系统属性和环境变量
+	ConfigurableEnvironment environment = getOrCreateEnvironment();
+	//获取命令行参数
+	//Spring Boot支持多种参数配置方式，而根据配置方式的不同读取方式也不同，所在属性源也不同
+	//比如命令行参数--spring.profiles.active=xxx，会先从SimpleCommandLinePropertySource中读取
+	configureEnvironment(environment, applicationArguments.getSourceArgs());
+	//在"classpath:/,classpath:/config/,file:./,file:./config/"路径下搜索 location + appName + "-" + profile + "." + ext
+	//例如搜索application-dev.properties、application-dev.yml、application-dev.xml等配置文件
+	listeners.environmentPrepared(environment);
+	if (!this.webEnvironment) {
+		environment = new EnvironmentConverter(getClassLoader())
+				.convertToStandardEnvironmentIfNecessary(environment);
+	}
+	return environment;
 }
 
 
