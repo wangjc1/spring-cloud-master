@@ -242,6 +242,9 @@ public ConfigurableApplicationContext run(String... args) {
 		//	}
 		//}
 		afterRefresh(context, applicationArguments);
+		//getFinishedEvent(context, exception)获取到ApplicationReadyEvent类型的事件;
+		//触发ApplicationReadyEvent.onApplicationEvent事件，调用performPreinitialization方法初始化一些转换器
+		//WebMvcConfigurationSupport
 		listeners.finished(context, null);
 		stopWatch.stop();
 		if (this.logStartupInfo) {
@@ -362,5 +365,15 @@ Boy eats Fruit
 分派发生在此，“boy”被声明为People，但调用的依然是Boy的函数，也就是所谓的多态。但是，虽然传入的参数"apple"的实际类型是Apple，但调用的函数依然是Boy的“ public void eat(Fruit f)”，不是“ public void eat(Apple f)”。运行时，Java参数的实际类型不影响分派，这就是单分派了。
 
 在java中，利用访问者模式，可以实现多分配
-//在运行时，传入不同node的子类，可以访问不同的node
-visitor.visit(Node node)
+//node有node1、node2两个实现，当visitor传给两个node时，发生一次动态分配，这个是由继承实现的
+for(Node node:Nodes){
+	node.accept(visitor);
+}
+//this传给visitor时，发生一次静态多分配，这个是由多态实现的
+node1.accept(Visitor visitor){
+	visitor.visitNode1(this);//this==node1
+}
+node2.accept(Visitor visitor){
+	visitor.visitNode2(this);//this==node2
+}
+
