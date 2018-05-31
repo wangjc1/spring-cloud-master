@@ -18,9 +18,9 @@ import java.util.Map;
  */
 @Configuration
 @MyEnableAutoConfiguration
-public class CustomizeEnableAutoConfigure {
+public class CustomizeEnableAutoConfigureApp {
     public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(CustomizeEnableAutoConfigure.class);
+        SpringApplication application = new SpringApplication(CustomizeEnableAutoConfigureApp.class);
         application.run(args);
     }
 

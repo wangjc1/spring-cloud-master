@@ -243,10 +243,12 @@ public ConfigurableApplicationContext run(String... args) {
 		//}
 		afterRefresh(context, applicationArguments);
 		//getFinishedEvent(context, exception)获取到ApplicationReadyEvent类型的事件;
-		//触发ApplicationReadyEvent.onApplicationEvent事件，调用performPreinitialization方法初始化一些转换器
-		//WebMvcConfigurationSupport
+		//触发BackgroundPreinitializer.onApplicationEvent方法，调用performPreinitialization方法初始化一些json转换器
+		//ApplicationReadyEvent事件类主要用于判断转换器是否初始化完毕了
 		listeners.finished(context, null);
+		//停止计算时间等
 		stopWatch.stop();
+		//打印一行日志
 		if (this.logStartupInfo) {
 			new StartupInfoLogger(this.mainApplicationClass)
 					.logStarted(getApplicationLog(), stopWatch);
@@ -258,6 +260,13 @@ public ConfigurableApplicationContext run(String... args) {
 		throw new IllegalStateException(ex);
 	}
 }
+
+还记得WebMvcAutoConfiguration类吗，他是SpringBoot里面的核心自动配置类，WebMvcAutoConfigurationAdapter类是WebMvcAutoConfiguration(用@EnableAutoConfiguration注解激活)的内部类，用来注入SPringMVC相关类，比如RequestMappingHandlerMapping、RequestMappingHandlerAdapter等
+@Configuration
+//EnableWebMvcConfiguration继承了DelegatingWebMvcConfiguration类，而@EnableWebMvc注解也导入DelegatingWebMvcConfiguration配置类
+@Import(EnableWebMvcConfiguration.class)
+@EnableConfigurationProperties({ WebMvcProperties.class, ResourceProperties.class })
+public static class WebMvcAutoConfigurationAdapter extends WebMvcConfigurerAdapter {}
 
 environment变量里面保存着所以程序相关的环境变量和属性，不知道大家有没有考虑个问题，就是这里加载了属性，那么Spring容器对象如何访问呢？其实这要归功于Spring容器上下文(WebApplicationContext)，他会把environment中的属性源(PropertySource)集合包装成@Value等可以访问的属性对象，这个过程比较繁琐，具体参考PropertySourcesPlaceholderConfigurer.processProperties()方法
 private ConfigurableEnvironment prepareEnvironment(
@@ -377,3 +386,6 @@ node2.accept(Visitor visitor){
 	visitor.visitNode2(this);//this==node2
 }
 
+
+通过Bean类型从spring容器中获取所有实现类
+BeanFactoryUtils.beanNamesForTypeIncludingAncestors()
