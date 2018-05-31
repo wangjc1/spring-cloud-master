@@ -1,4 +1,4 @@
-package boot.custom.enableAutoConfigureAnno;
+package boot.customer.enableAutoConfigureAnno;
 
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

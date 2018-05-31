@@ -1,4 +1,4 @@
-package boot.custom.enableAutoConfigureAnno;
+package boot.customer.enableAutoConfigureAnno;
 
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.context.annotation.Import;
