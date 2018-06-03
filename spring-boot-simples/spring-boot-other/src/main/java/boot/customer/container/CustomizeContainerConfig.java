@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-public class ContainerConfig {  
+public class CustomizeContainerConfig {
     @Bean
     public EmbeddedServletContainerCustomizer embeddedServletContainerCustomizer() {  
         return new EmbeddedServletContainerCustomizer() {
