@@ -1,19 +1,18 @@
-package cloud.balance;
+package cloud.eureka.web;
 
+import cloud.eureka.service.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 @RestController
-public class ConsumerController {
+public class HelloController {
     @Autowired
-    RestTemplate restTemplate;
+    private HelloService helloService;
 
     @RequestMapping(value = "/hi", method = RequestMethod.GET)
     public String hi(String name) {
-        return restTemplate.getForEntity("http://cloud-eureka-provider/hi?name="+name, String.class).getBody();
+        return helloService.hiService(name);
     }
-
 }

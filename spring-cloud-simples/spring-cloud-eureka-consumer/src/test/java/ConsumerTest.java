@@ -1,4 +1,4 @@
-import cloud.balance.ConsumerController;
+import cloud.eureka.web.HelloController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,14 +25,14 @@ public class ConsumerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		mvc = MockMvcBuilders.standaloneSetup(new ConsumerController()).build();
+		mvc = MockMvcBuilders.standaloneSetup(new HelloController()).build();
 	}
 
 	@Test
 	public void getHello() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/hi").param("name","wjc").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(content().string(equalTo("Hello World")));
+				.andExpect(content().string(equalTo("hi wjc,i am from port:9002")));
 	}
 
 }

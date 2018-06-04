@@ -16,6 +16,7 @@
         <module>spring-cloud-eureka-center</module>
         <module>spring-cloud-eureka-provider</module>
         <module>spring-cloud-eureka-consumer</module>
+        <module>spring-cloud-config</module>
     </modules>
 
     <dependencies>
@@ -24,10 +25,9 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
