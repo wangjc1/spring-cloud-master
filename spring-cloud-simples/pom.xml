@@ -16,6 +16,8 @@
         <module>spring-cloud-eureka</module>
         <module>spring-cloud-config</module>
         <module>spring-cloud-ha-config</module>
+        <module>spring-cloud-zuul</module>
+        <module>spring-cloud-bus</module>
     </modules>
 
     <dependencies>
