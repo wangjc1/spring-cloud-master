@@ -10,16 +10,21 @@ import org.springframework.web.bind.annotation.RestController;
  打开网址访问：http://localhost:8881/hi，网页显示：
  foo version 3
 
- 注意：这里如果只是简单测试不要引入spring-cloud-starter-eureka包，否则会自动向配置中心寻找配置服务，会提示找不到 @Value("${foo}")
-
+ 比普通配置服务多了配置中心的几个参数：
+ #配置中心
+ eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+ #启用从配置中心读取文件。
+ spring.cloud.config.discovery.enabled=true
+ # 配置服务的servieId，即应用名。
+ spring.cloud.config.discovery.serviceId=config-ha-server
 
  */
 @SpringBootApplication
 @RestController
-public class ConfigClientApp {
+public class ConfigHAClientApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConfigClientApp.class, args);
+        SpringApplication.run(ConfigHAClientApp.class, args);
     }
 
     @Value("${foo}")

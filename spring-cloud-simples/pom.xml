@@ -13,20 +13,15 @@
     </parent>
 
     <modules>
-        <module>spring-cloud-eureka-center</module>
-        <module>spring-cloud-eureka-provider</module>
-        <module>spring-cloud-eureka-consumer</module>
+        <module>spring-cloud-eureka</module>
         <module>spring-cloud-config</module>
+        <module>spring-cloud-ha-config</module>
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
