@@ -18,6 +18,8 @@
         <module>spring-cloud-ha-config</module>
         <module>spring-cloud-zuul</module>
         <module>spring-cloud-bus</module>
+        <module>spring-cloud-zipkin</module>
+        <module>spring-cloud-zipkin-storage</module>
     </modules>
 
     <dependencies>

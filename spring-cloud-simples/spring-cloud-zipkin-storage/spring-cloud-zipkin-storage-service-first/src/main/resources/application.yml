@@ -1,0 +1,13 @@
+server:
+  port: 8988
+
+spring:
+  application:
+    name: zipkin-storage-service-first
+
+  #rabbitmq配置
+  rabbitmq:
+    host: 127.0.0.1
+    port : 5672
+    username: guest
+    password: guest
