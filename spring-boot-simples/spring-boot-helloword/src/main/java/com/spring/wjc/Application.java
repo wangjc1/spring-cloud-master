@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
  */
 @EnableAutoConfiguration
 //@Configuration
-//@ComponentScan
+//@ComponentScan(basePackages = "com.spring.wjc")
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class,args);
