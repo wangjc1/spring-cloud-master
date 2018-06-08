@@ -1,7 +1,6 @@
-package mq.rabbit.cloud.service.hello;
+package mq.rabbit.cloud.service.direct;
 
 import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

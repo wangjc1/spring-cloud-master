@@ -1,4 +1,4 @@
-package mq.rabbit.cloud.service.hello;
+package mq.rabbit.cloud.service.direct;
 
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
