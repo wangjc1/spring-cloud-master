@@ -1,6 +1,16 @@
 https://gitee.com/jempson/rocketmq-spring-boot-starter/tree/master
 https://www.jianshu.com/p/453c6e7ff81c
 
+1. 架构
+2. 安装和启动
+ 2.1 双master模式
+ 2.3 双master，双slave模式，异步复制
+ 2.3 多master多slave模式，同步读写
+3. Producer Group 和 Consumer Group，Broker(服务器)
+4. 广播消费和集群消费
+5. 生产端消息过滤 Tag
+6.
+
 
 
 引入依赖
