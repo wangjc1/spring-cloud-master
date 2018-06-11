@@ -1,4 +1,7 @@
 https://gitee.com/jempson/rocketmq-spring-boot-starter/tree/master
+https://www.jianshu.com/p/453c6e7ff81c
+
+
 
 引入依赖
 <dependency>
