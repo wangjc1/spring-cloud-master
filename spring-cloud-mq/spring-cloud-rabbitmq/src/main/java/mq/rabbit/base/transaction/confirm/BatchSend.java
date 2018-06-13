@@ -2,9 +2,12 @@ package mq.rabbit.base.transaction.confirm;
 
 import com.rabbitmq.client.*;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 基于批量确认的 事务模式
  *
+ * 这里模拟发送到第10条时休眠一会，这时停止消费端接受消息，让后面20条无法确认，然后重新启动消费端，查看后面20条是否能重新被投递后消费
  */
 public class BatchSend {
 
@@ -32,13 +35,13 @@ public class BatchSend {
         try{
             for(int i=0;i<30;i++){
                 // 发送消息
-                String message = "hello, tx message";
+                String message = "hello, batch message";
                 channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
                 System.out.println(" ["+i+"] Sent message : '" + message + "'");
 
-                //模拟异常
+                //这里模拟发送到第10条时休眠一会，这时停止消费端接受消息，让后面20条无法确认
                 if(i==10){
-                    int j = 1/0;
+                    TimeUnit.SECONDS.sleep(30);
                 }
             }
         }catch (Exception e){
