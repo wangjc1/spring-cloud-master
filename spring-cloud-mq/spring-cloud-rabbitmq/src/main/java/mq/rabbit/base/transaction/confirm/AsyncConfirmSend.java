@@ -48,7 +48,6 @@ public class AsyncConfirmSend {
              */
             @Override
             public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-
                 System.out.println("消息发送成功,deliveryTag:" + deliveryTag + "multiple:" + multiple + "");
                 if (multiple) {
                     confirmSet.headSet(deliveryTag + 1).clear();

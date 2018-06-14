@@ -9,7 +9,7 @@ import java.util.Random;
 public class ReceiveLogsDirect {  
       
     private static final String EXCHANGE_NAME = "ex_logs_direct";    
-    private static final String[] SEVERITIES = { "info", "warning", "error" };    
+    private static final String[] SEVERITIES = {  "info", "warning", "error" };
   
     public static void main(String[] args) throws Exception {  
           // 创建连接和频道    
@@ -28,7 +28,7 @@ public class ReceiveLogsDirect {
         String queueName = channel.queueDeclare().getQueue();    
         String severity = getSeverity();    
         // 指定binding_key    
-        channel.queueBind(queueName, EXCHANGE_NAME, severity);    
+        channel.queueBind(queueName, EXCHANGE_NAME, severity);
         System.out.println(" [*] Waiting for "+severity+" logs. To exit press CTRL+C");
 
         Consumer consumer = new DefaultConsumer(channel) {
@@ -52,6 +52,6 @@ public class ReceiveLogsDirect {
     {    
         Random random = new Random();    
         int ranVal = random.nextInt(3);    
-        return SEVERITIES[ranVal];    
+        return SEVERITIES[ranVal%SEVERITIES.length];
     }    
 }  

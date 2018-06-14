@@ -35,13 +35,13 @@ public class BatchSend {
         try{
             for(int i=0;i<30;i++){
                 // 发送消息
-                String message = "hello, batch message";
+                String message = "hello, batch message["+i+"]";
                 channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
                 System.out.println(" ["+i+"] Sent message : '" + message + "'");
 
                 //这里模拟发送到第10条时休眠一会，这时停止消费端接受消息，让后面20条无法确认
                 if(i==10){
-                    TimeUnit.SECONDS.sleep(30);
+                    TimeUnit.SECONDS.sleep(10);
                 }
             }
         }catch (Exception e){
