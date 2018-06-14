@@ -17,6 +17,14 @@
             <version>4.2.0</version>
         </dependency>
 
+        <!-- open messaging api -->
+        <dependency>
+            <groupId>io.openmessaging</groupId>
+            <artifactId>openmessaging-api</artifactId>
+            <version>0.1.0-alpha</version>
+        </dependency>
+
+
         <dependency>
             <groupId>com.spring.wjc</groupId>
             <artifactId>spring-cloud-rocketmq-starter</artifactId>
