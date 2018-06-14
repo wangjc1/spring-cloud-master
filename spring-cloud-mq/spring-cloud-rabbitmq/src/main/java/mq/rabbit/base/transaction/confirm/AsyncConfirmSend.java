@@ -6,12 +6,10 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 异步confirm模式 模式
  *
- * 这里模拟发送到第10条时休眠一会，这时停止消费端接受消息，让后面20条无法确认，然后重新启动消费端，查看后面20条是否能重新被投递后消费
  */
 public class AsyncConfirmSend {
 
@@ -79,10 +77,6 @@ public class AsyncConfirmSend {
             long tag = channel.getNextPublishSeqNo();
             channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
             System.out.println(String.format(" [%s,%s] Sent message : '" + message + "'",i,tag));
-            //这里模拟发送到第10条时休眠一会，这时停止消费端接受消息，让后面20条无法确认
-            if(i==10){
-                TimeUnit.SECONDS.sleep(30);
-            }
             confirmSet.add(tag);
         }
 

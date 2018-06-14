@@ -2,12 +2,12 @@ package mq.rabbit.base.transaction.confirm;
 
 import com.rabbitmq.client.*;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
  * 基于批量确认的 事务模式
  *
- * 这里模拟发送到第10条时休眠一会，这时停止消费端接受消息，让后面20条无法确认，然后重新启动消费端，查看后面20条是否能重新被投递后消费
  */
 public class BatchSend {
 
@@ -32,24 +32,34 @@ public class BatchSend {
         //开启批量确认模式
         channel.confirmSelect();
 
+        //监听消息确认消息，批量模式下，每当发送一批消息成功后，broker发送一个确认消息
+        channel.addConfirmListener(new ConfirmListener() {
+            @Override
+            public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+                System.out.println("nack: deliveryTag = " + deliveryTag + " multiple: " + multiple);
+            }
+
+            @Override
+            public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+                System.out.println("ack: deliveryTag = " + deliveryTag + " multiple: " + multiple);
+            }
+        });
+
         try{
             for(int i=0;i<30;i++){
                 // 发送消息
                 String message = "hello, batch message["+i+"]";
                 channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
                 System.out.println(" ["+i+"] Sent message : '" + message + "'");
-
-                //这里模拟发送到第10条时休眠一会，这时停止消费端接受消息，让后面20条无法确认
-                if(i==10){
-                    TimeUnit.SECONDS.sleep(10);
-                }
             }
         }catch (Exception e){
             System.out.println("send message failed");
         }
 
+
         //等待回复，如果回复true
         try{
+            //channel.waitForConfirmsOrDie();
             if (channel.waitForConfirms()) {
                 System.out.println("发送成功");
             }
@@ -57,6 +67,7 @@ public class BatchSend {
                 System.out.println("发送失败");
             }
         }finally {
+            TimeUnit.MILLISECONDS.sleep(30);
             channel.close();
             connection.close();
         }
