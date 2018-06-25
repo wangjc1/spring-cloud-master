@@ -15,6 +15,7 @@
         <module>spring-cloud-rabbitmq</module>
         <module>spring-cloud-rocketmq</module>
         <module>spring-cloud-rocketmq-starter</module>
+        <module>spring-cloud-kafka</module>
     </modules>
 
     <dependencies>
